@@ -5,15 +5,15 @@
 @layer components {
 
     .main-container {
-        @apply max-w-screen-sm mx-auto;
+        @apply max-w-screen-sm mx-auto px-4;
     }
 
     .modal-container {
-        @apply fixed z-20 flex items-center justify-center h-full w-full max-w-screen-sm top-0
+        @apply fixed z-20 flex items-center justify-center h-full w-full top-0;
     }
 
     .modal-content {
-        @apply h-auto max-h-full bg-white rounded-lg p-8 z-20 w-full;
+        @apply h-auto max-w-screen-sm w-full bg-white rounded-lg p-8 z-20 mx-4;
     }
 
     .card-container {
