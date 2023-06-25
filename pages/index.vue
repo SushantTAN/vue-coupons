@@ -39,8 +39,8 @@ const password = ref('');
 const handleLoginClick = () => {
 
     if (username.value === 'admin' && password.value === 'admin') {
-        // localStorage.setItem("token", "1234567890")
-        router.push({ path: "/list" });
+        localStorage.setItem("token", "1234567890")
+        router.replace({ path: "/list" });
     }
     // Clear the form fields after login
     username.value = '';
