@@ -1,7 +1,6 @@
 <template>
-    <div class="fixed flex items-center justify-center h-full w-full top-0">
-        <div class="h-auto max-h-full bg-white rounded-lg p-8 z-10 w-full">
-            <!-- <span @click="emits('resetModal')">close</span> -->
+    <div class="modal-container">
+        <div class="modal-content">
             <h2 class="font-medium text-xl capitalize">{{ modalData.name }}</h2>
             <h3>Do you want to redeem this coupon?</h3>
 
@@ -13,7 +12,7 @@
 
             <slot></slot>
         </div>
-        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" @click="emits('resetModal')">
+        <div class="fixed z-19 inset-0 flex items-center justify-center bg-black bg-opacity-50" @click="emits('resetModal')">
 
         </div>
         

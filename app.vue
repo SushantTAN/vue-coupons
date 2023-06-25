@@ -1,41 +1,15 @@
 <template>
   <Heading>Coupons</Heading>
+  <main class="main-container">
 
-  <div v-for="coupon in items" :key="coupon.id"
-    class="relative transition-colors duration-500 hover:bg-gray-100 rounded mb-4 overflow-hidden shadow-lg flex align items-center justify-between px-4">
-    <div class="pr-6 py-4">
-      <div class="text-xl mb-2">{{ coupon.name }}</div>
+    <div v-for="coupon in items" :key="coupon.id">
+      <CouponCard :data="coupon" @handleRedeemButton="handleRedeemButton" />
     </div>
 
-    <button :disabled="!coupon.canRedeem" @click="handleRedeemButton(coupon)"
-      class="transition-colors duration-1000 bg-cyan-500 hover:bg-sky-700 disabled:bg-gray-300 text-white px-2 py-1 rounded">Redeem</button>
-    
-      <div v-if="!coupon.canRedeem" class="transition-all duration-500 opacity-0 hover:opacity-100 absolute left-0 top-0 w-full h-full flex items-center justify-center bg-cyan-600 flex-col" >
-        <p>Your promo code is:</p>
-        <h3>{{ coupon.promoCode }}</h3>
-      </div>
-  </div>
-
-  <Modal v-if="modalData.id !== null" :modalData="modalData" @resetModal="resetModal" @changeToRedeem="changeToRedeem">
+    <Modal v-if="modalData.id !== null" :modalData="modalData" @resetModal="resetModal" @changeToRedeem="changeToRedeem">
     </Modal>
-  <!-- Card Flip -->
-  <!-- <div class="card-flip">
-          <div class="flip">
-            <div class="front">
-              
-              <div style="background-color: green;">
-                aaaaaaaaaaaaa
-              </div>
-            </div>
-            <div class="back">
-              
-              <div style="background-color: red;">
-                vbbbbbbbbbbbbb
-              </div>
-            </div>
-          </div>
-        </div> -->
-  <!-- End Card Flip -->
+   
+  </main>
 </template>
 
 
@@ -59,8 +33,13 @@ const coupons = await useFetch("/api/coupon");
 // let items = ref(coupons.data)
 let items = ref<CouponType[]>([
   { id: 1, name: 'test gdagdag cia u ', canRedeem: true, promoCode: "123wwd" },
-  { id: 2, name: 'test 2', canRedeem: true, promoCode: "123wwd" },
-
+  { id: 2, name: 'test 2', canRedeem: true, promoCode: "900fwf" },
+  { id: 3, name: 'test 3', canRedeem: true, promoCode: "900fwf" },
+  { id: 4, name: 'test 4', canRedeem: true, promoCode: "900fwf" },
+  { id: 5, name: 'test 5', canRedeem: true, promoCode: "900fwf" },
+  { id: 6, name: 'test 6', canRedeem: true, promoCode: "900fwf" },
+  { id: 7, name: 'test 7', canRedeem: true, promoCode: "900fwf" },
+  { id: 8, name: 'test 8', canRedeem: true, promoCode: "900fwf" },
 ])
 const modalData = ref<ModalDataType>({ id: null, name: null, canRedeem: null, promoCode: null })
 
@@ -68,12 +47,12 @@ const handleRedeemButton = (item: ModalDataType) => {
   modalData.value = item;
 }
 
-const resetModal = (item: ModalDataType) => {
+const resetModal = () => {
   modalData.value = { id: null, name: null, canRedeem: null, promoCode: null };
 }
 
-const changeToRedeem = (id:number) => {
-  
+const changeToRedeem = (id: number) => {
+
   let tempState = [...items.value];
   const index = tempState.findIndex(item => item.id === id);
 
@@ -84,7 +63,7 @@ const changeToRedeem = (id:number) => {
   }
 
   // Replace the item at the found index with the new item
-  tempState[index] = {...tempState[index], canRedeem: false};
+  tempState[index] = { ...tempState[index], canRedeem: false };
   items.value = tempState;
 }
 

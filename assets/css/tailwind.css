@@ -3,45 +3,29 @@
 @tailwind utilities;
 
 @layer components {
-    .card-flip {
-        perspective: 1000px;
 
-        /* &:hover .flip,
-        &.hover .flip {
-            transform: rotateY(180deg);
-        } */
+    .main-container {
+        @apply max-w-screen-sm mx-auto;
     }
 
-    .card-flip:hover .flip, .card-flip.hover .flip {
-        transform: rotateY(180deg);
+    .modal-container {
+        @apply fixed z-20 flex items-center justify-center h-full w-full max-w-screen-sm top-0
     }
 
-    .card-flip,
-    .front,
-    .back {
-        width: 100%;
+    .modal-content {
+        @apply h-auto max-h-full bg-white rounded-lg p-8 z-20 w-full;
     }
 
-    .flip {
-        transition: 0.6s;
-        transform-style: preserve-3d;
-        position: relative;
+    .card-container {
+        @apply relative transition-colors duration-500 hover:bg-gray-100 rounded mb-4 overflow-hidden shadow-lg flex items-center justify-between px-4;
     }
 
-    .front,
-    .back {
-        backface-visibility: hidden;
-        position: absolute;
-        top: 0;
-        left: 0;
+    .button-primary {
+        @apply transition-colors duration-1000 bg-cyan-500 hover:bg-sky-700 disabled:bg-gray-300 text-white px-2 py-1 rounded;
     }
 
-    .front {
-        z-index: 2;
-        transform: rotateY(0deg);
+    .promo-container {
+        @apply transition-all duration-500 opacity-0 hover:opacity-100 absolute left-0 top-0 w-full h-full flex items-center justify-center bg-cyan-600 flex-col;
     }
 
-    .back {
-        transform: rotateY(180deg);
-    }
 }
