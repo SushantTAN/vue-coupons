@@ -6,14 +6,14 @@
                 <h2 class="text-3xl font-bold mb-6 text-center">Login</h2>
                 <form @submit.prevent="handleLoginClick" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                     <div class="mb-4">
-                        <label for="username" class="block text-gray-700 text-sm font-bold mb-2">Username:</label>
+                        <label for="username" class="label">Username:</label>
                         <input type="text" id="username" v-model="username" required
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            class="input">
                     </div>
                     <div class="mb-6">
-                        <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+                        <label for="password" class="label">Password:</label>
                         <input type="password" id="password" v-model="password" required
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            class="input">
                     </div>
                     <div class="flex items-center justify-between">
                         <button type="submit"
