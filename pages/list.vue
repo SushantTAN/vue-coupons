@@ -1,11 +1,13 @@
 <template>
+  <transition name="toast">
+    <Toast v-if="showToast" :message="toastMessage" :status="toastStatus" />
+  </transition>
   <Heading>Coupons</Heading>
   <main class="main-container">
     <h3 class="text-xl font-medium mt-10 mb-4">Use your coupons here</h3>
 
     <form @submit.prevent="handleUse" class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4">
-      <input type="text" id="username" maxlength="6" v-model="promoCode" required
-        class="input">
+      <input type="text" id="username" maxlength="6" v-model="promoCode" required class="input">
 
       <div class="flex items-center justify-between">
         <button type="submit" class="button-primary bg-blue-500 hover:bg-blue-700 mt-4">
@@ -46,6 +48,23 @@ const coupons = await useFetch("/api/coupon");
 const { data, pending, error, refresh } = await useFetch("/api/coupon");
 
 // let items = ref(coupons.data)
+
+const showToast = ref<boolean>(false);
+const toastMessage = ref<string>('');
+const toastStatus = ref<string>('success');
+
+
+
+const triggerToast = (status: string, message: string) => {
+  showToast.value = true;
+  toastMessage.value = message;
+  toastStatus.value = status;
+  setTimeout(() => {
+    showToast.value = false;
+    toastMessage.value = '';
+  }, 3000)
+}
+
 
 const promoCode = ref('');
 
@@ -97,7 +116,32 @@ const changeToRedeem = (id: number) => {
 }
 
 const handleUse = () => {
-  console.log("here")
+  let usedCoupons = localStorage.getItem("usedCoupons");
+  let promoList = couponList.map((el: CouponType) => el.promoCode);
+
+  if (usedCoupons) {
+    let parsedCoupons = JSON.parse(usedCoupons);
+    if (parsedCoupons.includes(promoCode.value)) {
+      triggerToast("error", "This promo code has already been used");
+    } else if (!promoList.includes(promoCode.value)) {
+      triggerToast("error", "This promo code is not valid");
+    } else {
+      let newPromoList : string[] =  [...parsedCoupons, promoCode.value];
+      localStorage.setItem("usedCoupons", JSON.stringify(newPromoList))
+      triggerToast("success", "You have successfully used this promo code");
+      promoCode.value = '';
+    }
+  } else {
+    if (!promoList.includes(promoCode.value)) {
+      triggerToast("error", "This promo code is not valid");
+    } else {
+      let newPromoList : string[] = [promoCode.value];
+      localStorage.setItem("usedCoupons", JSON.stringify(newPromoList))
+      triggerToast("success", "You have successfully used this promo code");
+      promoCode.value = '';
+    }
+  }
+  
 }
 
 </script>
