@@ -12,6 +12,7 @@ const router = useRouter();
 const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("redemed");
+    localStorage.removeItem("usedCoupons")
     router.replace({ path: "/" });
 }
 </script>
