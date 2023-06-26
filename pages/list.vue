@@ -27,7 +27,7 @@
     </div>
 
     <h3 class="text-xl font-medium mt-10 mb-0.5">Redeemed coupons</h3>
-    <p class="mb-1">Hover or click to see the redeem codes</p>
+    <p v-if="redemedList.length !== 0" class="mb-1">Hover or click to see the redeem codes</p>
 
     <div v-for="coupon in redemedList" :key="coupon.id">
 
