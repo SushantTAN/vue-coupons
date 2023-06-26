@@ -1,7 +1,5 @@
 import type { AxiosError } from "axios";
 
-// import { TokenUtils } from "@utils";
-
 export const StatusCode = {
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
@@ -41,14 +39,6 @@ function errorCodeMessage(code?: number): string {
   }
 }
 
-// async function getNetInfo(): Promise<NetInfoState | undefined> {
-//   try {
-//     return await NetInfo.fetch("wifi");
-//   } catch (e) {
-//     return undefined;
-//   }
-// }
-
 export interface ErrorResponse {
   errorMessage: string;
   errors?: Record<string, string>;
@@ -71,20 +61,6 @@ export async function formatErrorAndThrow<T>(
   error: AxiosError<ErrorResponse>
 ): Promise<void> {
   const httpError = error as HttpError<T>;
-
-  // if (httpError.response?.status === StatusCode.UNAUTHORIZED) {
-  //   TokenUtils.dispatchSessionChanged(undefined);
-  //   Toast.show("Session expired. Please login again!");
-  //   return;
-  // }
-
-  // const netInfo = await getNetInfo();
-  // if (netInfo?.isConnected === false) {
-  //   httpError.fieldErrors = {};
-  //   httpError.hasFieldErrors = false;
-  //   httpError.message = i18next.t(Messages.NO_INTERNET_CONNECTION, { ns: "network" });
-  //   throw httpError;
-  // }
 
   let message = "Something went wrong";
   if (typeof error.response?.data?.errorMessage === "string") {

@@ -18,34 +18,46 @@
 
     <h3 class="text-xl font-medium mt-10 mb-4">Available coupons</h3>
 
-    <div v-for="coupon in items.filter(el => el.canRedeem)" :key="coupon.id">
+    <div v-for="coupon in items.filter((obj) => !obj.redeemed)" :key="coupon.id">
       <CouponCard :data="coupon" @handleRedeemButton="handleRedeemButton" />
     </div>
 
     <h3 class="text-xl font-medium mt-10 mb-0.5">Redeemed coupons</h3>
     <p class="mb-1">Hover or click to see the redeem codes</p>
 
-    <div v-for="coupon in redemedList" :key="coupon.id">
-
+    <div v-for="coupon in items.filter((obj) => obj.redeemed)" :key="coupon.id">
       <CouponCard :data="coupon" @handleRedeemButton="handleRedeemButton" />
     </div>
 
   </main>
-  <Modal v-if="modalData.id !== null" :modalData="modalData" @resetModal="resetModal" @changeToRedeem="changeToRedeem">
+  <Modal v-if="modalData.id !== null" :modalData="modalData" @resetModal="resetModal" @couponsFetch="couponsFetch">
   </Modal>
 </template>
-  
-  
-<script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue';
-import { useFetch } from 'nuxt/app';
-import { CouponType, ModalDataType } from '../utils/types';
-import { couponList } from '../utils/data';
 
+
+<script lang="ts" setup>
+import {
+  ref,
+  onMounted,
+  // watch
+} from 'vue';
+// import { useFetch } from "nuxt/app";
+import { CouponType, ModalDataType } from '../utils/types';
+// import { couponList } from "../utils/data";
+import { Api } from "../api/api";
 
 // const test = await useFetch("/api/coupon", {method: "POST", body: {test: 'test'}});
-const coupons = await useFetch("/api/coupon");
-const { data, pending, error, refresh } = await useFetch("/api/coupon");
+// const coupons = await useFetch("/api/coupon");
+// const { data, pending, error, refresh } = await useFetch("/api/coupon");
+
+const couponsFetch = async () => {
+  const couponData = await Api.get("/coupon/findAll");
+  items.value = couponData.data.data;
+};
+
+onMounted(() => {
+  couponsFetch();
+});
 
 // let items = ref(coupons.data)
 
@@ -68,56 +80,40 @@ const triggerToast = (status: string, message: string) => {
 
 const promoCode = ref('');
 
-let redemed = ref<any>(null);
-let redemedList = ref<any>([]);
-let redemedListId = ref<any>([]);
+// let redemed = ref<any>(null);
+// let redemedList = ref<any>([]);
+// let redemedListId = ref<any>([]);
 let items = ref<CouponType[]>([]);
 
-onMounted(() => {
-  redemed.value = localStorage.getItem("redemed");
-  if (redemed.value) {
-    redemedList.value = JSON.parse(redemed.value);
-  }
-  redemedListId = redemedList.value.map((el: CouponType) => el.id);
-  items.value = couponList.filter((el: CouponType) => !redemedListId.includes(el.id))
-});
+// onMounted(() => {
+//   redemed.value = localStorage.getItem("redemed");
+//   if (redemed.value) {
+//     redemedList.value = JSON.parse(redemed.value);
+//   }
+//   redemedListId = redemedList.value.map((el: CouponType) => el.id);
+//   items.value = couponList.filter((el: CouponType) => !redemedListId.includes(el.id))
+// });
 
-watch(items, (newValue) => {
-  redemed.value = localStorage.getItem("redemed");
-  if (redemed.value) {
-    redemedList.value = JSON.parse(redemed.value);
-  }
-});
+// watch(items, (newValue) => {
+//   redemed.value = localStorage.getItem("redemed");
+//   if (redemed.value) {
+//     redemedList.value = JSON.parse(redemed.value);
+//   }
+// });
 
-const modalData = ref<ModalDataType>({ id: null, name: null, canRedeem: null, promoCode: null })
+const modalData = ref<ModalDataType>({ id: null, name: null, redeemed: null, promoCode: null })
 
 const handleRedeemButton = (item: ModalDataType) => {
   modalData.value = item;
 }
 
 const resetModal = () => {
-  modalData.value = { id: null, name: null, canRedeem: null, promoCode: null };
-}
-
-const changeToRedeem = (id: number) => {
-
-  let tempState = [...items.value];
-  const index = tempState.findIndex(item => item.id === id);
-
-  // If the index is -1, it means the item was not found
-  if (index === -1) {
-    console.log('Item not found!');
-    return;
-  }
-
-  // Replace the item at the found index with the new item
-  tempState[index] = { ...tempState[index], canRedeem: false };
-  items.value = tempState;
-}
+  modalData.value = { id: null, name: null, redeemed: null, promoCode: null };
+};
 
 const handleUse = () => {
   let usedCoupons = localStorage.getItem("usedCoupons");
-  let promoList = couponList.map((el: CouponType) => el.promoCode);
+  let promoList = toRaw(items.value).map((el: CouponType) => el.promoCode);
 
   if (usedCoupons) {
     let parsedCoupons = JSON.parse(usedCoupons);
@@ -141,7 +137,7 @@ const handleUse = () => {
       promoCode.value = '';
     }
   }
-  
+
 }
 
 </script>

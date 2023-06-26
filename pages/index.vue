@@ -42,10 +42,12 @@
 </template>
 
 <script lang="ts" setup>
+// import mockApi from "../api/mock/index";
 import { useRouter } from "nuxt/app";
 import { Api } from "../api/api";
 
 const router = useRouter();
+// mockApi({ delayResponse: 800, onNoMatch: "passthrough" });
 
 const username = ref("");
 const password = ref("");
