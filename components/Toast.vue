@@ -14,9 +14,9 @@
 <style>
 .toast-wrapper {
     position: fixed;
-    width: 100%;
+    width: 90%;
     top: 20px;
-    right: 30px;
+    right: 10px;
     z-index: 30;
 }
 

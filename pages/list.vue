@@ -139,11 +139,14 @@ const handleUse = () => {
   let usedCoupons = localStorage.getItem("usedCoupons");
   let promoList = couponList.map((el: CouponType) => el.promoCode);
 
+  let redemedListTemp = redemedList.value.map((el:any) => el.promoCode);
+  console.log("val", redemedListTemp)
+
   if (usedCoupons) {
     let parsedCoupons = JSON.parse(usedCoupons);
     if (parsedCoupons.includes(promoCode.value)) {
       triggerToast("error", "This promo code has already been used");
-    } else if (!promoList.includes(promoCode.value)) {
+    } else if (!promoList.includes(promoCode.value) || !redemedListTemp.includes(promoCode.value)) {
       triggerToast("error", "This promo code is not valid");
     } else {
       let newPromoList: string[] = [...parsedCoupons, promoCode.value];
@@ -152,7 +155,7 @@ const handleUse = () => {
       promoCode.value = '';
     }
   } else {
-    if (!promoList.includes(promoCode.value)) {
+    if (!promoList.includes(promoCode.value) || !redemedListTemp.includes(promoCode.value)) {
       triggerToast("error", "This promo code is not valid");
     } else {
       let newPromoList: string[] = [promoCode.value];

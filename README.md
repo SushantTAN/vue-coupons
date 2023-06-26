@@ -1,6 +1,4 @@
-# Nuxt 3 Minimal Starter
-
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+# Nuxt 3 Coupon application for frontend
 
 ## Setup
 
@@ -8,13 +6,10 @@ Make sure to install the dependencies:
 
 ```bash
 # npm
-npm install
-
-# pnpm
-pnpm install
+npm install --legacy-peer-deps
 
 # yarn
-yarn install
+yarn install --legacy-peer-deps
 ```
 
 ## Development Server
@@ -25,39 +20,13 @@ Start the development server on `http://localhost:3000`:
 # npm
 npm run dev
 
-# pnpm
-pnpm run dev
-
 # yarn
 yarn dev
 ```
 
-## Production
+After running the development server, login with credentials: ( username: admin  password: admin ).
 
-Build the application for production:
+You will be redirected to the list page, where you can redeem the coupons. 
+The redemed tokens will be present at the bottom of the page. When you hover or click on the redemed tokens, you will see the promo code for the tokens which can be copied by clicking on the code itself. 
 
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+The promo code can be used in the form found at the top of the login screen. One promo code can only be used once.
