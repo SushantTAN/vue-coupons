@@ -7,7 +7,7 @@
     <h3 class="text-xl font-medium mt-10 mb-4">Use your coupons here</h3>
 
     <form @submit.prevent="handleUse" class="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4">
-      <input type="text" id="username" maxlength="6" v-model="promoCode" required class="input">
+      <input type="text" id="username" v-model="promoCode" required class="input">
 
       <div class="flex items-center justify-between">
         <button type="submit" class="button-primary bg-blue-500 hover:bg-blue-700 mt-4">
@@ -19,7 +19,7 @@
     <h3 class="text-xl font-medium mt-10 mb-4">Available coupons</h3>
 
     <div v-for="coupon in items.filter((obj) => !obj.redeemed)" :key="coupon.id">
-      <CouponCard :data="coupon" @handleRedeemButton="handleRedeemButton" />
+      <CouponCard :data="coupon" @handleRedeemButton="handleRedeemButton" @triggerToast="triggerToast"/>
     </div>
 
     <h3 class="text-xl font-medium mt-10 mb-0.5">Redeemed coupons</h3>
@@ -30,7 +30,7 @@
     </div>
 
   </main>
-  <Modal v-if="modalData.id !== null" :modalData="modalData" @resetModal="resetModal" @couponsFetch="couponsFetch">
+  <Modal v-if="modalData.id !== null" :modalData="modalData" @resetModal="resetModal" @couponsFetch="couponsFetch" @triggerToast="triggerToast">
   </Modal>
 </template>
 
@@ -65,8 +65,6 @@ const showToast = ref<boolean>(false);
 const toastMessage = ref<string>('');
 const toastStatus = ref<string>('success');
 
-
-
 const triggerToast = (status: string, message: string) => {
   showToast.value = true;
   toastMessage.value = message;
@@ -76,7 +74,6 @@ const triggerToast = (status: string, message: string) => {
     toastMessage.value = '';
   }, 3000)
 }
-
 
 const promoCode = ref('');
 

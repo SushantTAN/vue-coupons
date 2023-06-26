@@ -1,4 +1,7 @@
 <template>
+  <transition name="toast">
+    <Toast v-if="showToast" :message="toastMessage" :status="toastStatus" />
+  </transition>
   <div class="modal-container">
     <div class="modal-content">
       <h2 class="font-medium text-xl capitalize">{{ modalData.name }}</h2>
@@ -22,12 +25,27 @@
 <script setup lang="ts">
 import { Api } from "../api/api";
 
+const showToast = ref<boolean>(false);
+const toastMessage = ref<string>('');
+const toastStatus = ref<string>('success');
+
+const triggerToast = (status: string, message: string) => {
+  showToast.value = true;
+  toastMessage.value = message;
+  toastStatus.value = status;
+  setTimeout(() => {
+    showToast.value = false;
+    toastMessage.value = '';
+  }, 3000)
+}
+
 const { modalData } = defineProps(["modalData"]);
-const emits = defineEmits(['resetModal', 'couponsFetch']);
+const emits = defineEmits(['resetModal', 'couponsFetch', 'triggerToast']);
 
 const handleRedeem = async () => {
   const data = await Api.get(`/coupon/updateById/${modalData.id}`);
 
+  emits('triggerToast', 'success', 'Copy redeemed coupon and use it in the above form.!');
   emits("couponsFetch");
   emits("resetModal");
 };
