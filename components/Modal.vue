@@ -23,7 +23,7 @@
 import { CouponType } from "~/utils/types";
 
 const { modalData } = defineProps(["modalData"]);
-const emits = defineEmits(['resetModal', 'changeToRedeem']);
+const emits = defineEmits(['resetModal', 'changeToRedeem', 'triggerToast']);
 
 const handleRedeem = () => {
     let redemed = localStorage.getItem("redemed");
@@ -39,6 +39,7 @@ const handleRedeem = () => {
         redemedList = [{...modalData, canRedeem: false}]
     }
     localStorage.setItem("redemed", JSON.stringify(redemedList));
+    emits("triggerToast", 'success', 'You have redeemed the coupon. You can now use it in the above form.')
     emits('changeToRedeem', modalData.id);
     emits('resetModal');
 }

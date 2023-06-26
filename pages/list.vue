@@ -19,7 +19,11 @@
     <h3 class="text-xl font-medium mt-10 mb-4">Available coupons</h3>
 
     <div v-for="coupon in items.filter(el => el.canRedeem)" :key="coupon.id">
-      <CouponCard :data="coupon" @handleRedeemButton="handleRedeemButton" @triggerToast="triggerToast"/>
+      <CouponCard :data="coupon" @handleRedeemButton="handleRedeemButton" />
+    </div>
+
+    <div v-if="items.filter(el => el.canRedeem).length === 0" class="flex items-center justify-center">
+      <img src="https://t4.ftcdn.net/jpg/04/75/01/23/360_F_475012363_aNqXx8CrsoTfJP5KCf1rERd6G50K0hXw.jpg" class="h-48" />
     </div>
 
     <h3 class="text-xl font-medium mt-10 mb-0.5">Redeemed coupons</h3>
@@ -30,23 +34,35 @@
       <CouponCard :data="coupon" @handleRedeemButton="handleRedeemButton" />
     </div>
 
+    <div v-if="redemedList.length === 0" class="flex items-center justify-center">
+      <img src="https://t4.ftcdn.net/jpg/04/75/01/23/360_F_475012363_aNqXx8CrsoTfJP5KCf1rERd6G50K0hXw.jpg" class="h-48" />
+    </div>
+
   </main>
-  <Modal v-if="modalData.id !== null" :modalData="modalData" @resetModal="resetModal" @changeToRedeem="changeToRedeem">
+  <Modal v-if="modalData.id !== null" :modalData="modalData" @resetModal="resetModal" @changeToRedeem="changeToRedeem"
+    @triggerToast="triggerToast">
   </Modal>
 </template>
   
   
 <script lang="ts" setup>
 import { ref, onMounted, watch } from 'vue';
-import { useFetch } from 'nuxt/app';
+import { useFetch, useRouter } from 'nuxt/app';
 import { CouponType, ModalDataType } from '../utils/types';
 import { couponList } from '../utils/data';
 
+const router = useRouter();
+
+onMounted(() => {
+  let token = localStorage.getItem("token");
+  if (token) {
+
+  } else {
+    router.replace({ path: "/" });
+  }
+});
 
 // const test = await useFetch("/api/coupon", {method: "POST", body: {test: 'test'}});
-const coupons = await useFetch("/api/coupon");
-const { data, pending, error, refresh } = await useFetch("/api/coupon");
-
 // let items = ref(coupons.data)
 
 const showToast = ref<boolean>(false);
@@ -62,6 +78,13 @@ const triggerToast = (status: string, message: string) => {
     toastMessage.value = '';
   }, 3000)
 }
+
+onMounted(() => {
+  let token = localStorage.getItem("token");
+  if (token) {
+    router.replace({ path: "/list" });
+  }
+});
 
 const promoCode = ref('');
 
@@ -123,7 +146,7 @@ const handleUse = () => {
     } else if (!promoList.includes(promoCode.value)) {
       triggerToast("error", "This promo code is not valid");
     } else {
-      let newPromoList : string[] =  [...parsedCoupons, promoCode.value];
+      let newPromoList: string[] = [...parsedCoupons, promoCode.value];
       localStorage.setItem("usedCoupons", JSON.stringify(newPromoList))
       triggerToast("success", "You have successfully used this promo code");
       promoCode.value = '';
@@ -132,13 +155,13 @@ const handleUse = () => {
     if (!promoList.includes(promoCode.value)) {
       triggerToast("error", "This promo code is not valid");
     } else {
-      let newPromoList : string[] = [promoCode.value];
+      let newPromoList: string[] = [promoCode.value];
       localStorage.setItem("usedCoupons", JSON.stringify(newPromoList))
       triggerToast("success", "You have successfully used this promo code");
       promoCode.value = '';
     }
   }
-  
+
 }
 
 </script>

@@ -36,7 +36,7 @@ const triggerToast = (status: string, message: string) => {
   }, 3000)
 }
 
-const emits = defineEmits(['handleRedeemButton', 'triggerToast']);
+const emits = defineEmits(['handleRedeemButton']);
 
 const copyToClipboard = (text: string) => {
     const textarea = document.createElement('textarea');

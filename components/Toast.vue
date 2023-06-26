@@ -1,6 +1,6 @@
 <template>
     <div class="toast-wrapper">
-        <div class="toast" :class="status === 'success' ? 'bg-green-300 hover:bg-green-600' : 'bg-red-400 hover:bg-red-600' ">
+        <div class="toast" :class="status === 'success' ? 'bg-green-400 hover:bg-green-600' : 'bg-red-400 hover:bg-red-600' ">
             {{message}}
         </div>
     </div>
