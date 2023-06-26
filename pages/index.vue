@@ -1,8 +1,8 @@
 <template>
-  <main class="min-h-screen">
-    <div class="flex justify-center items-center h-screen">
-      <div class="max-w-md w-full">
-        <h2 class="text-3xl font-bold mb-6 text-center">Login</h2>
+  <main class="min-h-screen p-6">
+    <div class="flex">
+      <div class="w-full">
+        <h2 class="text-3xl font-bold">Login</h2>
         <form
           @submit.prevent="handleLoginClick"
           class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
@@ -38,7 +38,26 @@
         </form>
       </div>
     </div>
+    <div class="flex mt-10 mb-10 items-center">
+      <h2 class="text-3xl font-bold mr-10">Student List</h2>
+
+      <h3
+        class="text-xl font-medium mr-10 px-8 py-1 rounded-lg bg-red-100 cursor-pointer"
+        @click="handleAddStudentModal()"
+      >
+        ADD
+      </h3>
+    </div>
+
+    <div v-for="student in studentListData?.data" :key="student.id">
+      <StudentCard :student="student" />
+    </div>
   </main>
+  <AddStudentModal
+    v-if="openAddStudentModal"
+    @resetModal="resetModal"
+    @findAllStudent="findAllStudent"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -46,8 +65,27 @@
 import { useRouter } from "nuxt/app";
 import { Api } from "../api/api";
 
+const openAddStudentModal = ref<boolean>(false);
 const router = useRouter();
+const studentListData = ref();
 // mockApi({ delayResponse: 800, onNoMatch: "passthrough" });
+
+const findAllStudent = async () => {
+  const tempData = await Api.get("/student/findAll");
+  studentListData.value = tempData.data;
+};
+
+onMounted(() => {
+  findAllStudent();
+});
+
+const handleAddStudentModal = () => {
+  openAddStudentModal.value = true;
+};
+
+const resetModal = () => {
+  openAddStudentModal.value = false;
+};
 
 const username = ref("");
 const password = ref("");
