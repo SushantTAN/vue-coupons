@@ -19,7 +19,7 @@
     <h3 class="text-xl font-medium mt-10 mb-4">Available coupons</h3>
 
     <div v-for="coupon in items.filter(el => el.canRedeem)" :key="coupon.id">
-      <CouponCard :data="coupon" @handleRedeemButton="handleRedeemButton" />
+      <CouponCard :data="coupon" @handleRedeemButton="handleRedeemButton" @triggerToast="triggerToast"/>
     </div>
 
     <h3 class="text-xl font-medium mt-10 mb-0.5">Redeemed coupons</h3>
@@ -53,8 +53,6 @@ const showToast = ref<boolean>(false);
 const toastMessage = ref<string>('');
 const toastStatus = ref<string>('success');
 
-
-
 const triggerToast = (status: string, message: string) => {
   showToast.value = true;
   toastMessage.value = message;
@@ -64,7 +62,6 @@ const triggerToast = (status: string, message: string) => {
     toastMessage.value = '';
   }, 3000)
 }
-
 
 const promoCode = ref('');
 
